@@ -7,6 +7,12 @@ func NewMock() Cache {
 	return &mock{}
 }
 
-func (m *mock) GetAndLoad(key string, loader func() (interface{}, error)) (interface{}, error) {
-	return loader()
+func (m *mock) GetAndLoad(key string, value interface{}, loader func() (interface{}, error)) error {
+	result, err := loader()
+	if err != nil {
+		return err
+	}
+
+	SetValue(value, result)
+	return nil
 }

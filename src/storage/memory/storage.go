@@ -18,13 +18,14 @@ func NewStorage(defaultExpiration time.Duration, cleanupInterval time.Duration) 
 }
 
 // Get will fetch the cached value
-func (s *storage) Get(key string) (interface{}, error) {
+func (s *storage) Get(key string, value interface{}) error {
 	result, ok := s.cache.Get(key)
 	if !ok {
-		return nil, fmt.Errorf("Error cache key (%s) not found", key)
+		return fmt.Errorf("Error cache key (%s) not found", key)
 	}
 
-	return result, nil
+	cache.SetValue(value, result)
+	return nil
 }
 
 // Set will set a value in the cache for the expiration duration
