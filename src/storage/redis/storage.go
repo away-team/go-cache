@@ -36,7 +36,7 @@ func (s *storage) Get(key string, value interface{}) error {
 
 // Set will set a value in the cache for the expiration duration
 func (s *storage) Set(key string, value interface{}, expiration time.Duration) error {
-	return s.cache.Set(rcache.Item{
+	return s.cache.Set(&rcache.Item{
 		Key:        key,
 		Object:     value,
 		Expiration: expiration,
