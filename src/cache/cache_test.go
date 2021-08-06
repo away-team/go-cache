@@ -37,3 +37,27 @@ func Test_GetAndLoad(t *testing.T) {
 	}
 
 }
+
+func Test_GetSetDelete(t *testing.T) {
+	c := cache.New(memory.NewStorage(time.Minute, time.Minute), time.Minute, false, &log.Logger{})
+
+	err := c.Set("foobar", "baz", nil)
+	if err != nil {
+		t.Fatalf("Error in Set: %v", err)
+	}
+	var s string
+	err = c.Get("foobar", &s)
+	if err != nil {
+		t.Fatalf("Error in Get: %v", err)
+	}
+
+	err = c.Delete("foobar")
+	if err != nil {
+		t.Fatalf("Error in Delete: %v", err)
+	}
+	err = c.Get("foobar", &s)
+	if err == nil {
+		t.Fatalf("Error in Get item not deleted")
+	}
+
+}

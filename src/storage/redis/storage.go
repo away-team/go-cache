@@ -42,3 +42,9 @@ func (s *storage) Set(key string, value interface{}, expiration time.Duration) e
 		Expiration: expiration,
 	})
 }
+
+// Delete will remove a value from the cache
+func (s *storage) Delete(key string) error {
+	s.cache.Delete(key)
+	return nil
+}
