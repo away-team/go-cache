@@ -13,9 +13,12 @@ type Logger interface {
 	Printf(format string, v ...interface{})
 }
 
-// Cache can GetAndLoad items
+// Cache can GetAndLoad, Get, Set, and Delete items by key
 type Cache interface {
 	GetAndLoad(key string, value interface{}, loader func() (interface{}, error)) error
+	Get(key string, value interface{}) error
+	Set(key string, value interface{}, expiration *time.Duration) error
+	Delete(key string) error
 }
 
 type cache struct {
@@ -69,6 +72,22 @@ func (c *cache) GetAndLoad(key string, value interface{}, loader func() (interfa
 
 	SetValue(value, result)
 	return nil
+}
+
+func (c *cache) Get(key string, value interface{}) error {
+	return c.backend.Get(key, value)
+}
+
+func (c *cache) Set(key string, value interface{}, expiration *time.Duration) error {
+	exp := c.expiration
+	if expiration != nil {
+		exp = *expiration
+	}
+	return c.backend.Set(key, value, exp)
+}
+
+func (c *cache) Delete(key string) error {
+	return c.backend.Delete(key)
 }
 
 // SetValue will write result to value
