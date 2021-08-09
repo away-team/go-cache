@@ -12,7 +12,7 @@ import (
     "log"
 	"github.com/away-team/go-cache/src/cache"
 	"github.com/away-team/go-cache/src/storage/memory"
-	"github.com/away-team/go-cache/src/storage/redis"
+	rstorage "github.com/away-team/go-cache/src/storage/redis"
 )
 
 ...
@@ -29,7 +29,7 @@ import (
             "server2": ":6380",
         },
     })
-    storage = rcache.NewStorage(ring)
+    storage = rstorage.NewStorage(ring)
 
     // setup the cache with memory or redis storage...
 	c := cache.New(storage, defaultExpiration, false, &log.Logger{})
